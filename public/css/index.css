@@ -1,0 +1,101 @@
+/* Styling for splash page */
+
+/* General page styling and layout */
+body {
+    background-color: #f5f5f5;
+    font-family: 'Oswald', sans-serif;
+}
+
+main {
+    max-width: 60em;
+    display: grid;
+    margin-left: auto;
+    margin-right: auto;
+    grid-template-rows: 11em 8em 8em 8em;
+    grid-template-areas:
+        "logo"
+        "header"
+        "content"
+        "footer"
+}
+
+logo {
+    text-align: center;
+}
+
+header {
+    text-align: center;
+}
+
+content {
+    text-align: center;
+}
+
+footer {
+    text-align: center;
+}
+
+/* Logo styling */
+.logo {
+    max-height: 12em;
+}
+
+/* Text styling */
+
+h1 {
+    color: #8bc34a;
+    font-size: 3em;
+}
+
+h3 {
+    font-size: 2em;
+}
+
+label {
+    font-family: 'Raleway', sans-serif;
+}
+
+/* Button styling */
+button {
+    background-color: #8bc34a;
+    color: #f5f5f5;
+    -webkit-transition-duration: 0.15s;
+    font-family: 'Raleway', sans-serif;
+    border: 2px black solid;
+    font-size: 18px;
+    border-radius: 2px;
+}
+
+button:hover {
+    background-color: #4F8511;
+}
+
+.signon {
+    width: 50%;
+    padding: 14px 20px;
+    margin-bottom: 1em;
+}
+
+.formbutton {
+    width: 20%;
+    padding: 14px 10px;
+    margin-top: 0.5em;
+}
+
+/* Input styling */
+
+input {
+    min-width: 20em;
+    height: 2em;
+    font-size: 1em;
+    font-family: 'Raleway', sans-serif;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border: 1px grey solid;
+    border-radius:2px;
+    padding: 4px;
+}
+
+input:valid {
+    border: 2px #8bc34a solid;
+}

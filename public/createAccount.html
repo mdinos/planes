@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head lang=en>
+        <link href="/css/index.css" rel=stylesheet title=index/>
+        <link href="https://fonts.googleapis.com/css?family=Oswald|Raleway" rel="stylesheet">
+        <script src="js/main.js" type="text/javascript"></script>
+        <title>log in - planes - speedy planning</title>
+    </head>
+    <body>
+        <main>
+            <logo>
+                <a href=index.html><img src="img/planes.png" class=logo></a>
+            </logo>
+            <header>
+                <h1>planes - speedy planning</h1>
+            </header>
+            <content>
+                <h3>create an account</h3>
+                <form>
+                    <label>Username - must be between 4 and 15 characters, numbers and letters only.</label><br>
+                    <input 
+                        type=text 
+                        name=username 
+                        id=username
+                        placeholder="Enter username" 
+                        autocomplete=on 
+                        required 
+                        pattern=[A-Za-z0-9]{4,15}><br>
+                    <label>Email address</label><br>
+                    <input 
+                        type=email 
+                        name=email 
+                        id=email
+                        placeholder="Enter valid email" 
+                        autocomplete=on 
+                        required><br>
+                    <label>Confirm email address</label><br>
+                    <input 
+                        type=email 
+                        name=confrim_email
+                        id=email2
+                        placeholder="Re-enter email" 
+                        autocomplete=on 
+                        required><br>
+                    <label>Password - must be between 6 and 30 characters, and contain at least one number. </label><br>
+                    <input 
+                        type=password 
+                        name=password
+                        id=password
+                        placeholder="Enter password" 
+                        required
+                        pattern=^(?=.*\d).{6,30}$><br>
+                    <label>Confirm password</label><br>
+                    <input 
+                        type=password 
+                        name=confirm_password
+                        id=password2
+                        placeholder="Re-enter password" 
+                        required
+                        pattern=^(?=.*\d).{6,30}$><br>
+                    <p id=errorzone></p>
+                    <button class=formbutton
+                            onclick="createAccount()">sign up</button>
+                </form>
+                <h3>already have an account?</h3>
+                <button class=signon>log in</button>
+            </content>
+            <footer>
+                
+            </footer>
+        </main>
+    </body>
+</html>
