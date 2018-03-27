@@ -11,7 +11,7 @@ main {
     display: grid;
     margin-left: auto;
     margin-right: auto;
-    grid-template-rows: 11em 8em 8em 8em;
+    grid-template-rows: 11em 8em auto 8em;
     grid-template-areas:
         "logo"
         "header"
@@ -98,4 +98,16 @@ input {
 
 input:valid {
     border: 2px #8bc34a solid;
+}
+
+/* Input error style */
+
+p#errorzone {
+    color: indianred;
+}
+
+/* Forgetting password style */
+a.forgottenlink {
+    font-family: 'Raleway', sans-serif;
+    color: dimgray;
 }

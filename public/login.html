@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head lang=en>
+        <link href="/css/index.css" rel=stylesheet title=index/>
+        <link href="https://fonts.googleapis.com/css?family=Oswald|Raleway" rel="stylesheet">
+        <script src="js/main.js" type="text/javascript"></script>
+        <title>log in - planes - speedy planning</title>
+    </head>
+    <body>
+        <main>
+            <logo>
+                <a href=index.html><img src="img/planes.png" class=logo></a>
+            </logo>
+            <header>
+                <h1>planes - speedy planning</h1>
+            </header>
+            <content>
+                <h3>log in to planes</h3>
+                <form>
+                    <label>Username</label><br>
+                    <input 
+                        type=text 
+                        name=username 
+                        id=username
+                        placeholder="Enter username" 
+                        autocomplete=on 
+                        required><br>
+                    <label>Password - reminder - caps lock matters!</label><br>
+                    <input 
+                        type=password 
+                        name=password
+                        id=password
+                        placeholder="Enter password" 
+                        required><br>
+                    <p id=errorzone></p>
+                    <button class=formbutton
+                            onclick="signIn()">sign in</button>
+                </form>
+                <form id=forgotten>
+                    <a class=forgottenlink onclick="forgottenPassword()">Forgotten your password?</a>
+                </form>
+                <h3>don't already have an account?</h3>
+                <a href=createAccount.html><button class=signon>create an account</button></a>
+            </content>
+            <footer>
+            </footer>
+        </main>
+    </body>
+</html>
