@@ -11,40 +11,50 @@ async function createAccount() {
     let password1 = document.getElementById('password').value
     let password2 = document.getElementById('password2').value
     
+    console.log("step 1")
+    
     // test user information for validity, and send errors from the top to the bottom of the form
     if (!usernamePattern.test(username)) {
         sendErrorToUser("Invalid username! Please ensure your name meets the criteria!")
         return false
     }
     else {
+        console.log("step 2")
         if (email1 != email2) {
             sendErrorToUser("Emails do not match! Please ensure you have typed you email correctly.")
             return false
         }
         else {
+            console.log("step 3")
             if (!emailPattern.test(email1)) {
                 sendErrorToUser("Email invalid, please ensure your email is correct.")
                 return false
             }
             else {
+                console.log("step 4")
                 if (password1 != password2) {
                     sendErrorToUser("Passwords do not match! Please retype your password.")
                     return false
                 }
                 else {
+                    console.log("step 5")
                     if (!pwPattern.test(password1)) {
                         sendErrorToUser("Password invalid, please ensure you have fulfilled the password creation criteria.")
                         return false
                     }
                     else {
+                        console.log("step 6")
                         let url = '/api/createuser'
                         
                         url += '?username=' + username
                         url += '&password=' + password1
                         url += '&email=' + email1
                         
+                        console.log("before")
                         const fetchOptions = { method: 'POST' }
+                        console.log("in between")
                         const response = await fetch(url, fetchOptions)
+                        console.log("after")
                         console.log(response + " RESPONSE")
                         if (!response.ok) {
                             console.log("There's something wrong with /api/createuser!")
@@ -77,9 +87,8 @@ async function signIn() {
     
     url += '?username=' + username
     url += '&password=' + password
-    
     const fetchOptions = { method: 'POST' }
     const response = await fetch(url, fetchOptions)
     
-    console.log(response);
+    console.log(response)
 }
