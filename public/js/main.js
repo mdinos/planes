@@ -53,7 +53,12 @@ async function createAccount() {
                         console.log("before")
                         const fetchOptions = { method: 'POST' }
                         console.log("in between")
-                        const response = await fetch(url, fetchOptions)
+                        let response
+                        try {
+                            response = await fetch(url)
+                        } catch (err) {
+                            console.error(err)
+                        }
                         console.log("after")
                         console.log(response + " RESPONSE")
                         if (!response.ok) {
@@ -80,15 +85,31 @@ function sendErrorToUser(error) {
 }
 
 async function signIn() {
+    console.log("pls work")
     let username = document.getElementById('username').value
     let password = document.getElementById('password').value
     
-    let url = '/api/login'
+    let data = {
+        'user': username, 
+        'pass': password
+    }
     
-    url += '?username=' + username
-    url += '&password=' + password
-    const fetchOptions = { method: 'POST' }
-    const response = await fetch(url, fetchOptions)
+    const fetchOptions = { 
+        method: 'post',
+        body: JSON.stringify(data),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }
     
-    console.log(response)
+    let response = await fetch('/api/login', fetchOptions)
+        .then(function(response) {
+            if (!response.ok) {
+                sendErrorToUser("Incorrect login information! Please try again.")
+            }
+            else {
+                window.location = '/secret';
+            }
+        })
 }

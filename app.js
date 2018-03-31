@@ -66,15 +66,12 @@ connection.query('CREATE DATABASE IF NOT EXISTS planesdb', function (err) {
 
 // app.use
 app.use(express.static(path.join(__dirname, 'public')))
+app.use((err, req, res, next) => { console.log(err); res.send(err); })
 
 // GET REQUESTS
 app.get('/api/postlogin', postLogin)
 // POST REQUESTS
-app.post('/api/login', function (err) {
-    if (err) {
-        console.error(err)
-    }
-})
+app.post('/api/login', login)
 app.post('/api/createuser', createUser)
 
 // Listen at 127.0.0.1:8080
