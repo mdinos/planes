@@ -61,11 +61,17 @@ exports.createDB = function() {
     })
 }
 
-exports.checkUser = async function(username, password) {
-    let response = await db.query('SELECT * FROM users WHERE username = "' + username + '"', function (err, results) {
-        let response = {};
+exports.checkUser = function(username, password, callback) {
+    db.query('SELECT * FROM users WHERE username = "' 
+             + username + '"', function (err, results) {
+        let response = {}
+        console.log(results)
         if (err) {
             console.error(err)
+            response.ok = false
+        }
+        else if (results == []) {
+            console.log("User does not exist")
             response.ok = false
         }
         else if (!passwordHash.verify(password, results[0].password)) {
@@ -77,11 +83,25 @@ exports.checkUser = async function(username, password) {
             response.ok = true
             response.userid = userid
         }
-        console.log("p1: " + response)
-        return response
+        callback(response)
     })
-    .then(function() {
-        console.log("p2: " + response)
-        return response
+}
+
+exports.createUser = function(username, password, email, callback) {
+    db.query('INSERT INTO users (username, password, email) VALUES ("' 
+             + username + '", "' 
+             + password + '", "' 
+             + email + '")', function (err) {
+        let response = {}
+        if (err) {
+            console.log("Error inserting user data into table 'users'.")
+            console.error(err)
+            response.ok = false
+        }
+        else {
+            console.log("User created: " + username)
+            response.ok = true
+        }
+        callback(response)
     })
 }

@@ -106,6 +106,10 @@ p#errorzone {
     color: indianred;
 }
 
+p#success {
+    color: #8bc34a;
+}
+
 /* Forgetting password style */
 a.forgottenlink {
     font-family: 'Raleway', sans-serif;

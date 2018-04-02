@@ -60,13 +60,12 @@
                         pattern=^(?=.*\d).{6,30}$><br>
                     <p id=errorzone></p>
                     <button class=formbutton
-                            onclick="return createAccount()">sign up</button>
+                            onclick="createAccount(); return false;">sign up</button>
                 </form>
                 <h3>already have an account?</h3>
                 <a href=login.html><button class=signon>log in</button></a>
             </content>
             <footer>
-                
             </footer>
         </main>
     </body>

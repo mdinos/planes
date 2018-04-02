@@ -11,70 +11,57 @@ async function createAccount() {
     let password1 = document.getElementById('password').value
     let password2 = document.getElementById('password2').value
     
-    console.log("step 1")
-    
     // test user information for validity, and send errors from the top to the bottom of the form
     if (!usernamePattern.test(username)) {
         sendErrorToUser("Invalid username! Please ensure your name meets the criteria!")
         return false
     }
+    else if (email1 != email2) {
+        sendErrorToUser("Emails do not match! Please ensure you have typed you email correctly.")
+        return false
+    }
+    else if (!emailPattern.test(email1)) {
+        sendErrorToUser("Email invalid, please ensure your email is correct.")
+        return false
+    }
+    else if (password1 != password2) {
+        sendErrorToUser("Passwords do not match! Please retype your password.")
+        return false
+    }
+    else if (!pwPattern.test(password1)) {
+        sendErrorToUser("Password invalid, please ensure you have fulfilled the password creation criteria.")
+        return false
+    }
     else {
-        console.log("step 2")
-        if (email1 != email2) {
-            sendErrorToUser("Emails do not match! Please ensure you have typed you email correctly.")
-            return false
+        let data = {
+            'user': username, 
+            'pass': password1,
+            'email': email1
         }
-        else {
-            console.log("step 3")
-            if (!emailPattern.test(email1)) {
-                sendErrorToUser("Email invalid, please ensure your email is correct.")
-                return false
+                        
+        const fetchOptions = { 
+            method: 'post',
+            body: JSON.stringify(data),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }
+
+        let response = await fetch('/api/createuser', fetchOptions)
+        .then(function(response) {
+            if (!response.ok) {
+                sendErrorToUser("There's something wrong! I'm working on it.")
             }
             else {
-                console.log("step 4")
-                if (password1 != password2) {
-                    sendErrorToUser("Passwords do not match! Please retype your password.")
-                    return false
-                }
-                else {
-                    console.log("step 5")
-                    if (!pwPattern.test(password1)) {
-                        sendErrorToUser("Password invalid, please ensure you have fulfilled the password creation criteria.")
-                        return false
-                    }
-                    else {
-                        console.log("step 6")
-                        let url = '/api/createuser'
-                        
-                        url += '?username=' + username
-                        url += '&password=' + password1
-                        url += '&email=' + email1
-                        
-                        console.log("before")
-                        const fetchOptions = { method: 'POST' }
-                        console.log("in between")
-                        let response
-                        try {
-                            response = await fetch(url)
-                        } catch (err) {
-                            console.error(err)
-                        }
-                        console.log("after")
-                        console.log(response + " RESPONSE")
-                        if (!response.ok) {
-                            console.log("There's something wrong with /api/createuser!")
-                            sendErrorToUser("Oops! Something went wrong, trust me, I'm working on it!");
-                            return false
-                        }
-                        else {
-                            console.log("Should be fine!");
-                            window.location.replace('login.html')
-                            return true
-                        }
-                    }
-                }
+                console.log("user created: " + username)
+                window.location.replace('login.html')
+                alert("Account created! Please proceed to login")
             }
-        }
+        })
+        .catch(function(err) {
+            console.log(err)
+        })
     }
 }
 
@@ -85,7 +72,6 @@ function sendErrorToUser(error) {
 }
 
 async function signIn() {
-    console.log("pls work")
     let username = document.getElementById('username').value
     let password = document.getElementById('password').value
     
@@ -105,11 +91,25 @@ async function signIn() {
     
     let response = await fetch('/api/login', fetchOptions)
         .then(function(response) {
-            if (!response.ok) {
-                sendErrorToUser("Incorrect login information! Please try again.")
-            }
-            else {
-                window.location = '/secret';
-            }
+            response.text().then(function(text) {
+                let data = JSON.parse(text)
+                if (!data.ok) {
+                    sendErrorToUser("Incorrect login information!")
+                }
+                else {
+                    let id = data.userid
+                    sessionStorage.setItem("id", id)
+                    loggedIn()
+                }
+            })
         })
+        .catch(function(err) {
+            console.log(err)
+        })
+}
+
+async function loggedIn() {
+    if (sessionStorage.getItem("id") != undefined) {
+        console.log("hello")
+    }
 }
