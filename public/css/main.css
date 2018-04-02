@@ -1,0 +1,113 @@
+/* General page styling and layout */
+body {
+    background-color: #f5f5f5;
+    font-family: 'Oswald', sans-serif;
+}
+
+main {
+    max-width: 60em;
+    height: 100%;
+    display: grid;
+    margin-left: auto;
+    margin-right: auto;
+    grid-template-rows: 80px 12em auto 8em;
+    grid-template-areas:
+        "navigation"
+        "header"
+        "content"
+        "footer"
+}
+
+navigation {
+    width: 99%;
+    max-width: 60em;
+    background-color: #f5f5f5;
+    border-bottom: 1px solid black;
+    position: absolute;
+    display: inline-block;
+    top: 0;
+    margin-left: -8px;
+    padding-left: 8px;
+    -webkit-transition: top 0.4s ease-in-out;
+}
+
+navigation > *, navigation > * > *{
+    display: inline-block;
+    font-size: 1em;
+}
+
+navigation > h1 {
+    color: #8bc34a;
+    font-size: 1.3em;
+}
+
+navigation > ul {
+    list-style: none;
+    float: right;
+}
+
+navigation > ul > li {
+    margin-right: 1em;
+    -webkit-transition: 0.2s ease-in-out;
+}
+
+navigation > ul > li:hover {
+    color: #8bc34a;
+}
+
+#signout:hover {
+    color: indianred;
+}
+
+img#logo {
+    width: 2em;
+    margin-right: 0.5em;
+}
+
+/* Animate top navigation onclick */
+.nav-up {
+    top: -80px;
+}
+
+.moveUp {
+    padding-top: 0px;
+}
+
+.rotate-180 {
+    -webkit-transform: rotate(180deg);
+}
+
+header {
+    padding-top: 60px;
+    -webkit-transition: 0.4s ease-in-out;
+}
+
+content {
+    text-align: center;
+    padding-top: 60px;
+    margin-top: 3em;
+    -webkit-transition: 0.4s ease-in-out;
+}
+
+footer {
+    text-align: center;
+    bottom: 0;
+    width: 100%;
+    margin-left: -8px;
+    padding-left: 8px;
+    background-color: #484848;
+    -webkit-transition: 0.4s ease-in-out;
+    color: #f5f5f5;
+    font-family: 'Raleway', sans-serif;
+}
+
+h3 {
+    font-size: 2em;
+    border-bottom: 1px solid #484848;
+    width: 75%;
+}
+
+#navButton {
+    max-width: 2em;
+    -webkit-transition: 0.4s ease-in-out;
+}

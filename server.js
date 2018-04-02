@@ -14,26 +14,28 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json())
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.get('/app', function(req, res) {
-    res.sendFile(path.join(__dirname, 'public/splash.html'))
-})
-
-app.get('/api/checkuser', function(req, res) {
-    
+app.post('/api/splash', function(req, res) {
+    let body = req.body
+    let userid = body.id
+    config.checkUser(userid, function(checkedUser) {
+        if (!checkedUser.ok) {
+            res.sendStatus(401)
+            console.log("401")
+        }
+        else {
+            console.log("all good")
+            return res.redirect('../splash.html')
+        }
+    })
 })
 
 app.post('/api/createuser', function(req, res) {
-    console.log("hello start")
     let body = req.body
     let username = body.user.toLowerCase()
     let password = body.pass
     let email = body.email.toLowerCase()
     let hashedPassword = passwordHash.generate(password)
-    console.log("hello")
-    config.createUser(username, hashedPassword, email, function(createdUser) {
-        console.log("in function")
-    })
-    console.log("whatsgoinon")
+    config.createUser(username, hashedPassword, email)
     res.sendStatus(200)
 })
 
@@ -42,7 +44,7 @@ app.post('/api/login', function(req, res) {
     let username = body.user.toLowerCase()
     let password = body.pass
     
-    config.checkUser(username, password, function(checkedUser) {
+    config.checkUserLogin(username, password, function(checkedUser) {
         if (!checkedUser.ok) {
             let response = JSON.stringify({
                 'ok': false
@@ -60,7 +62,7 @@ app.post('/api/login', function(req, res) {
     })
 })
 
-// Listen at 127.0.0.1:8080
-app.listen(8080, function() {
-    console.log("Server started, port 8080.")
+// Listen at 127.0.0.1:3000
+app.listen(3000, function() {
+    console.log("Server started, port 3000.")
 })

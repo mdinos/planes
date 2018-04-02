@@ -1,3 +1,17 @@
+document.addEventListener("DOMContentLoaded", function(e) {
+    console.log("DOM Loaded")
+    
+    // Animate top bar
+    let navButton = document.getElementById('navButton')
+    navButton.addEventListener("click", toggleNavUpDown)
+    
+    let greeting = document.getElementById('greeting')
+    greeting.innerHTML += " " + sessionStorage.getItem('username') + "!"
+})
+
+// Checks potential user information for validity
+// if all ok, passes information to server to be placed within the database
+// if all ok, redirects to login page
 async function createAccount() {
     // regex for checking validity of inputs
     let usernamePattern = /[A-Za-z0-9]{4,15}/
@@ -65,12 +79,15 @@ async function createAccount() {
     }
 }
 
+// Sends error to the user, in <p id=errorzone>
 function sendErrorToUser(error) {
     console.log(error)
     let errorzone = document.getElementById('errorzone')
     errorzone.innerHTML = error
 }
 
+// Calls server to check username and password against database
+// On success, adds userid/username to sessionstorage, and calls next function loggedin()
 async function signIn() {
     let username = document.getElementById('username').value
     let password = document.getElementById('password').value
@@ -99,6 +116,7 @@ async function signIn() {
                 else {
                     let id = data.userid
                     sessionStorage.setItem("id", id)
+                    sessionStorage.setItem("username", username)
                     loggedIn()
                 }
             })
@@ -108,8 +126,59 @@ async function signIn() {
         })
 }
 
+// After login, redirects to splash page
 async function loggedIn() {
-    if (sessionStorage.getItem("id") != undefined) {
-        console.log("hello")
+    let id = sessionStorage.getItem('id')
+    if (id != undefined) {
+        let data = {
+            'id': id
+        }
+        const fetchOptions = {
+            method: 'post',
+            body: JSON.stringify(data),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }
+        const response = await fetch('/api/splash', fetchOptions)
+        if (!response.ok) {
+            console.log('Fetch request for /api/splash has failed.')
+            return;
+        }
+        else {
+            if (window.location != response.url) {
+                window.location.assign(response.url)
+            }
+        }
     }
+    else {
+        window.location.assign('/')
+    }
+}
+
+// Sign out - removes userid from session storage
+async function signOut() {
+    let id = sessionStorage.getItem('id')
+    if (id != undefined) {
+        sessionStorage.removeItem('id')
+        sessionStorage.removeItem('username')
+    }
+    window.location.assign('/')
+}
+
+function toggleNavUpDown(e) {
+    console.log("Toggled")
+    let nav = document.getElementById('nav')
+    nav.classList.toggle('nav-up')
+    let navButton = document.getElementById('navButton') 
+    navButton.classList.toggle('rotate-180')
+    let moveUpArray = []
+    let header = document.getElementById('head')
+    let content = document.getElementById('content')
+    moveUpArray.push(header)
+    moveUpArray.push(content)
+    moveUpArray.forEach(function(pageArea) {
+        pageArea.classList.toggle('moveUp')
+    })
 }

@@ -1,4 +1,4 @@
-/* Styling for splash page */
+/* Styling for index/signup/signin pages */
 
 /* General page styling and layout */
 body {
@@ -104,10 +104,6 @@ input:valid {
 
 p#errorzone {
     color: indianred;
-}
-
-p#success {
-    color: #8bc34a;
 }
 
 /* Forgetting password style */

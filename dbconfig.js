@@ -44,7 +44,8 @@ exports.createDB = function() {
                      console.log("Table query successful.")
                 }
             })
-            db.query('CREATE TABLE IF NOT EXISTS sessions('
+            // TODO: More secure sessions with random userids implemented, check sessions against database to ensure that the person is logged in and not just someone who changed their session storage.
+            /*db.query('CREATE TABLE IF NOT EXISTS sessions('
                             + 'userid INT NOT NULL,' 
                             + 'PRIMARY KEY(userid),'
                             + 'dateStarted VARCHAR(15) NOT NULL,'
@@ -56,16 +57,15 @@ exports.createDB = function() {
                 else {
                     console.log("Session query successful.")
                 }
-            })
+            })*/
         })
     })
 }
 
-exports.checkUser = function(username, password, callback) {
+exports.checkUserLogin = function(username, password, callback) {
     db.query('SELECT * FROM users WHERE username = "' 
              + username + '"', function (err, results) {
         let response = {}
-        console.log(results)
         if (err) {
             console.error(err)
             response.ok = false
@@ -87,19 +87,34 @@ exports.checkUser = function(username, password, callback) {
     })
 }
 
-exports.createUser = function(username, password, email, callback) {
+exports.createUser = function(username, password, email) {
     db.query('INSERT INTO users (username, password, email) VALUES ("' 
              + username + '", "' 
              + password + '", "' 
              + email + '")', function (err) {
-        let response = {}
         if (err) {
             console.log("Error inserting user data into table 'users'.")
             console.error(err)
-            response.ok = false
         }
         else {
             console.log("User created: " + username)
+        }
+    })
+}
+
+exports.checkUser = function(userid, callback) {
+    db.query('SELECT * FROM users WHERE id = ' 
+             + userid + '', function(err, results) {
+        let response = {}
+        if (err) {
+            console.error(err)
+            response.ok = false
+        }
+        else if (results == []) {
+            console.log("User does not exist")
+            response.ok = false
+        }
+        else {
             response.ok = true
         }
         callback(response)
