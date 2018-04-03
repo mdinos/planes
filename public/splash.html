@@ -3,6 +3,7 @@
     <head lang=en>
         <link href="/css/main.css" rel=stylesheet title=index/>
         <link href="https://fonts.googleapis.com/css?family=Oswald|Raleway" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <script src="js/main.js" type="text/javascript"></script>
         <script type="text/javascript">
             loggedIn()
@@ -15,28 +16,44 @@
                 <img src="img/planes.png" id=logo>
                 <h1>planes</h1>
                 <ul>
-                    <li>home</li>
-                    <li>help</li>
-                    <a onclick="signOut();"><li id=signout>sign out</li></a>
+                    <a href=#><li>home</li></a>
+                    <a href=#><li>help</li></a>
+                    <a href=# 
+                       onclick="signOut();"><li id=signout>sign out</li></a>
                 </ul>
             </navigation>
             <header id=head>
-                <img src="img/icons/down-green.png" id=navButton>
-                <h3 id=greeting>Welcome to planes</h3>
+                <a href=#><img src="img/icons/down-green.png" id=navButton alt="menu up/down toggle"></a>
+                <h3 id=greeting>welcome to planes</h3>
             </header>
             <content id=content>
-                <table>
-                    <th>Day
-                        <td>
-                            Monday
-                        </td>
-                        <td>
-                            Tuesday
-                        </td>
-                    </th>
-                    <td>Monday</td>
-                </table>
-            <p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p><p>Hello</p>
+                <h4><a href="#"><img src="img/icons/plus-green.png" class=small id=addModule alt="create new module"></a> new module</h4>
+                <form class="newModule hide" id=moduleForm>
+                    <label>Title - maximum 50 characters - required</label><br>
+                    <input type=text
+                           id=title
+                           placeholder='Title'
+                           required><br>
+                    <label>Length (sessions)</label><br>
+                    <input type="number" 
+                           min=0
+                           max=48 
+                           id=sessionCount
+                           placeholder='Number of sessions'><br>
+                    <label>Description - maximum 150 characters</label><br>
+                    <input type=text
+                           id=desc
+                           placeholder='Description'><br>
+                    <button class=formbutton
+                            type=submit
+                            onclick="return addModule();">create
+                    </button>
+                    <button class=formbutton
+                            type=reset>reset form</button>
+                    <p id=errorzone></p>
+                </form>
+                <h4>your modules</h4>
+                <p id=modules></p>
             </content>
         </main>
     </body>

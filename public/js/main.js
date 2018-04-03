@@ -5,8 +5,16 @@ document.addEventListener("DOMContentLoaded", function(e) {
     let navButton = document.getElementById('navButton')
     navButton.addEventListener("click", toggleNavUpDown)
     
+    // Add module form unhiding
+    let addModule = document.getElementById('addModule')
+    addModule.addEventListener("click", unhideForm)
+    
+    // Add greeting on login splash page
     let greeting = document.getElementById('greeting')
     greeting.innerHTML += " " + sessionStorage.getItem('username') + "!"
+    
+    // Load modules
+    loadUserData()
 })
 
 // Checks potential user information for validity
@@ -46,6 +54,7 @@ async function createAccount() {
         sendErrorToUser("Password invalid, please ensure you have fulfilled the password creation criteria.")
         return false
     }
+    // send request to database, redirect on success to login page
     else {
         let data = {
             'user': username, 
@@ -68,7 +77,6 @@ async function createAccount() {
                 sendErrorToUser("There's something wrong! I'm working on it.")
             }
             else {
-                console.log("user created: " + username)
                 window.location.replace('login.html')
                 alert("Account created! Please proceed to login")
             }
@@ -167,8 +175,8 @@ async function signOut() {
     window.location.assign('/')
 }
 
+// Toggle classes which enable the top navigation bar to be put away
 function toggleNavUpDown(e) {
-    console.log("Toggled")
     let nav = document.getElementById('nav')
     nav.classList.toggle('nav-up')
     let navButton = document.getElementById('navButton') 
@@ -180,5 +188,99 @@ function toggleNavUpDown(e) {
     moveUpArray.push(content)
     moveUpArray.forEach(function(pageArea) {
         pageArea.classList.toggle('moveUp')
+    })
+}
+
+// Unhides/hides new module form from page
+function unhideForm(e) {
+    console.log("hide form")
+    let form = document.getElementById('moduleForm')
+    form.classList.toggle('hide')
+}
+
+// On load of main page, loads current data from database for user
+async function loadUserData() {
+    let userid = sessionStorage.getItem('id')
+    
+    let data = {
+        'userid': userid
+    }
+    
+    const fetchOptions = {
+        method: 'post',
+        body: JSON.stringify(data),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }
+    
+    const response = await fetch('/api/getusermodules', fetchOptions)
+    .then(function(response) {
+        response.text().then(function(text) {
+            let modules = JSON.parse(text)
+            modules.data.forEach(function(mod) {
+                let title = mod.title
+                let noSessions = mod.noSessions
+                let description = mod.description
+                addModuleToPage(title, noSessions, description)
+            })
+        })
+    })
+}
+
+// Add an induvidual module to the main splash page - currently much too slow.
+function addModuleToPage(title, noSessions, description) {
+    let modZone = document.getElementById('modules')
+    let _modData = document.createElement('p')
+    let modData = modZone.appendChild(_modData)
+    modData.innerHTML = title + " " + noSessions + " " + description
+    modData.classList.add('module')
+}
+
+// Calls server to add module to database, then calls loadUserData() to update the page.
+// TODO add input validation
+async function addModule() {
+    let title = document.getElementById('title').value
+    let sessionCount = document.getElementById('sessionCount').value
+    let desc = document.getElementById('desc').value
+    let userid = sessionStorage.getItem('id')
+    
+    let data = {
+        'userid': userid,
+        'title': title,
+        'sessionCount': sessionCount,
+        'desc': desc
+    }
+    const fetchOptions = {
+            method: 'post',
+            body: JSON.stringify(data),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }
+    
+    const response = await fetch('/api/addmodule', fetchOptions)
+    .then(function(response) {
+        if (!response.ok) {
+            sendErrorToUser("Oh no! Something has gone wrong!")
+            console.log("error with /api/addmodule")
+        }
+        else {
+            response.text().then(function(text) {
+                let data = JSON.parse(text)
+                if (!response.ok) {
+                    console.log("Something is wrong with the return data from /api/module!")
+                }
+                else {
+                    loadUserData()
+                }
+            })
+        }
+    })
+    .catch(function(err) {
+        sendErrorToUser("Oh no! Something has gone wrong!")
+        console.log("error with /api/addmodule")
     })
 }
